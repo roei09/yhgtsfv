@@ -1,0 +1,218 @@
+/* Community layer: podium medal colours and phone-friendly leaderboard tabs.
+   Loaded last; uses the design-system tokens from 08. */
+
+/* podium: second and third get their medal colours too (first is gold already) */
+html body .pod--2 .pod__block {
+  background: linear-gradient(180deg,rgba(217,222,240,.3),rgba(217,222,240,.05)) !important;
+  box-shadow: inset 0 0 0 1px rgba(217,222,240,.5) !important;
+  color: #eef1fb !important;
+}
+html body .pod--3 .pod__block {
+  background: linear-gradient(180deg,rgba(240,160,112,.32),rgba(240,160,112,.05)) !important;
+  box-shadow: inset 0 0 0 1px rgba(240,160,112,.55) !important;
+  color: #ffd9c2 !important;
+}
+html body .pod--1 .pod__block {
+  color: #fff3cf !important;
+}
+
+/* leaderboard tabs on phones: every tab visible (two rows) instead of a sideways scroller */
+@media (max-width:560px) {
+  html body .tabs-wrap {
+    overflow: visible !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+  html body .tabs {
+    display: grid !important;
+    grid-template-columns: repeat(6,minmax(0,1fr));
+    width: 100%;
+    gap: 4px !important;
+  }
+  html body .tabs .tab {
+    grid-column: span 2;
+    min-width: 0;
+    height: 44px !important;
+    padding: 0 6px !important;
+    white-space: normal;
+    line-height: 1.15;
+    font-size: calc(13px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  html body .tabs .tab:nth-of-type(n+4) {
+    grid-column: span 3;
+  }
+  html body .tabs__pill {
+    display: none !important;
+  }
+  html body .tabs .tab[aria-selected="true"] {
+    background: var(--kick) !important;
+    color: var(--kick-ink) !important;
+  }
+}
+
+/* the partner tour is one screen: the wheel scrolls past it, partners change with the arrows, dots, keys or a swipe */
+.tour {
+  height: 100vh;
+  height: 100svh;
+}
+.tour .mouse {
+  display: none !important;
+}
+
+/* phones: the hero shortcuts wrap instead of running off the screen */
+@media (max-width:420px) {
+  html body .hero__quick {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    row-gap: 4px !important;
+  }
+}
+
+/* phones: the two-word dock label "שיתופי פעולה" sits on two short lines so the dock keeps clear of the accessibility button */
+@media (max-width:420px) {
+  html body .dock__i[href="#collabs"] .dock__t {
+    white-space: normal;
+    max-width: 4.6em;
+    line-height: 1.05;
+    text-align: center;
+  }
+}
+@media (min-width:361px) and (max-width:380px) {
+  html body .dock__i {
+    min-width: 46px;
+    padding: 4px 3px;
+  }
+}
+
+/* partner quick menu: centred at the top of the tour, larger and clearly the way to move between partners */
+@media (min-width:861px) {
+  html body .tour .tmenu {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    padding: 7px;
+    gap: 6px;
+    background: rgba(14,5,32,.88);
+    box-shadow: inset 0 0 0 1.5px rgba(239,220,255,.28),0 0 0 4px rgba(14,5,32,.35),0 18px 40px -16px rgba(0,0,0,.9);
+  }
+  html body .tour .tmenu__b {
+    height: 48px;
+    padding: 0 24px;
+    font-size: calc(17px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+}
+@media (min-width:861px) and (max-width:1100px) {
+  html body .tour .tmenu__b {
+    padding: 0 16px;
+    font-size: calc(15.5px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+}
+@media (max-width:860px) {
+  html body .tour .tmenu {
+    background: rgba(14,5,32,.9);
+    box-shadow: inset 0 0 0 1.5px rgba(239,220,255,.28),0 14px 30px -14px rgba(0,0,0,.85);
+  }
+  html body .tour .tmenu__b {
+    height: 42px;
+  }
+}
+
+/* CardPull scene on computers: the shop picture slides left so the booster box on the counter sits fully beside the
+   info panel instead of straddling its edge (tour.js measures the panel and sets --L). The pack, its podium and the
+   spotlight are pinned to the screen, so they get the same offset back. */
+@media (min-width:900px) {
+  html body .cpw {
+    left: var(--L,clamp(calc(100vw - var(--W)),calc(50vw - var(--W)*.3),0px));
+  }
+  html body .cpk {
+    left: calc(25vw - 7.5% - var(--L,0px));
+  }
+  html body .cpod {
+    left: calc(25vw - 11% - var(--L,0px));
+  }
+  html body .cspot {
+    left: calc(25vw - 24% - var(--L,0px));
+  }
+}
+
+/* partner arrows: large white buttons with the site's violet glow, easy to spot on every partner scene */
+html body .tour .tarr {
+  width: 96px;
+  height: 96px;
+  margin-top: -48px;
+  color: #1a0b33;
+  background: linear-gradient(180deg,#ffffff,#e6dcff) !important;
+  box-shadow: 0 0 0 5px rgba(160,107,255,.5),0 0 40px 8px rgba(160,107,255,.6),0 20px 36px -12px rgba(0,0,0,.9) !important;
+}
+@media (min-width:861px) {
+  html body .tour .tarr--prev {
+    right: 14px;
+  }
+  html body .tour .tarr--next {
+    left: 44px;
+  }
+}
+html body .tour .tarr svg {
+  width: 42px;
+  height: 42px;
+  stroke-width: 3.2;
+}
+html body .tour .tarr:hover,
+html body .tour .tarr:focus-visible {
+  background: linear-gradient(180deg,#ffffff,#f2ecff) !important;
+  box-shadow: 0 0 0 6px rgba(160,107,255,.65),0 0 52px 12px rgba(160,107,255,.7),0 20px 36px -12px rgba(0,0,0,.9) !important;
+}
+@media (max-width:860px) {
+  html body .tour .tarr {
+    width: 64px;
+    height: 64px;
+    margin-top: 0;
+    box-shadow: 0 0 0 4px rgba(160,107,255,.5),0 0 26px 4px rgba(160,107,255,.55),0 14px 26px -10px rgba(0,0,0,.9) !important;
+  }
+  html body .tour .tarr svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* computers: every partner info panel sits a little further left, clear of the large "previous" arrow */
+@media (min-width:861px) {
+  html:not(.tour-stack) body .tour .spw .spw__panel {
+    margin-right: 72px;
+  }
+}
+
+/* phones: the partner scenes keep their pictures, lights and petals, but drop the small drifting particles and hold the
+   blinking bulbs steady. Measured on a throttled phone profile this halves the frame time on LÜZ and roughly halves the
+   stall when switching partners. */
+@media (max-width:860px) {
+  html.js .tour :is(.lz__flies,.lz__motes,.lbw__mist,.lbw__motes,.lbw__bubbles,.lbw__sky,.lbw__spark,.cpw__t,.cpw__gl,.cpw__em,.cpw__lf,.cpw__d,.cpw__bu) {
+    display: none !important;
+  }
+  html.js .tour :is(.lz__bulb,.lz__flood,.lz__lights,.psg__b i,.pzi__d,.pzi__e,.cpw__aura,.cpw__nb,.cpw__ss) {
+    animation: none !important;
+  }
+  html.js .tour .lbw__petals i:nth-child(2n) {
+    display: none !important;
+  }
+}
+/* taps on the partner controls fire at once, without the double-tap-zoom wait */
+.tour :is(.tarr,.tmenu__b,.tdot,.copy,.btn) {
+  touch-action: manipulation;
+}
+
+/* phones: the tiny drifting dots and shooting stars in each section's sky are dropped (about 20 animated layers per
+   section); the light rays, glow and star field stay */
+@media (max-width:860px) {
+  html.js :is(.aura__m,.shoot) {
+    display: none !important;
+  }
+}
+
+/* LÜZ street: the still part of the scene is a pre-rendered picture (its SVG had a noise texture and large blurs that the
+   phone had to recompute whenever the slide appeared, freezing the page for seconds); only the lamp glows and the
+   swinging string lights stay live on top. Same framing as the SVG (xMidYMin slice). Source: tools/art/luz-street.svg */
+.lz__bg {
+  object-fit: cover;
+  object-position: 50% 0;
+}

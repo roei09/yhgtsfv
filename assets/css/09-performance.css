@@ -1,0 +1,325 @@
+/* Performance and late fixes: fixed gradient layer, off-screen rendering, scroll-time pausing */
+/* Performance */
+
+/* The page gradient is painted once on its own fixed layer; background-attachment:fixed would repaint the
+   whole screen on every scroll step. */
+html body {
+  background: var(--space) !important;
+}
+html body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(1200px 900px at 50% 30%,#4a2096 0%,#2a1150 45%,#1a0b33 75%);
+}
+
+/* tablets: videos two-up */
+
+#leaderboard {
+  width: 100%;
+  max-width: 100vw;
+  min-width: 0;
+}
+@media (max-width:760px) {
+  #linksGrid .link {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 0 !important;
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+  #linksGrid .link .app {
+    width: 46px !important;
+    height: 46px !important;
+  }
+  #linksGrid .link b {
+    font-size: calc(16px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  .frame .sec__head {
+    margin-bottom: 28px !important;
+  }
+  html body .frame .h2,
+  html body .frame .h2--xl,
+  html body .frame .h2--mega,
+  html body #lbH.h2--xl {
+    font-size: calc(clamp(32px,9vw,42px)*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  html body .frame .sec__head .sec__intro {
+    font-size: calc(15.5px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  #linksGrid {
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    gap: 10px;
+  }
+  #linksGrid .link small {
+    font-size: calc(12.5px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  html body #linksGrid .link .link__arr {
+    position: absolute;
+    top: 14px;
+    inset-inline-end: 14px;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 8px;
+  }
+  #linksGrid .link--main {
+    grid-column: 1/-1;
+    flex-direction: row;
+    align-items: center;
+    padding: 18px !important;
+    min-height: 0 !important;
+  }
+  #linksGrid .link--main .app {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  #linksGrid .link--main b {
+    font-size: calc(21px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  #linksGrid .link--main .link__cta {
+    height: 44px;
+    padding: 0 14px;
+    font-size: calc(14px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  html body .vids {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 12px !important;
+    padding: 4px 20px 18px !important;
+    margin-inline: -20px !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .vids::-webkit-scrollbar {
+    display: none;
+  }
+  html body .vids .vid {
+    flex: 0 0 78%;
+    scroll-snap-align: center;
+  }
+  html body .lb {
+    border-radius: 22px;
+  }
+  .info .card {
+    padding: 20px 18px !important;
+  }
+  .specs li {
+    grid-template-columns: 96px 1fr;
+    min-height: 46px !important;
+  }
+  html body .specs .v {
+    font-size: calc(14.5px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  html body .cmd {
+    flex-wrap: wrap !important;
+    padding: 12px 12px 12px 14px !important;
+  }
+  .cmd > span:not(.mono) {
+    flex-basis: 100%;
+    order: 3;
+    font-size: calc(14px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  html body .hero__ctas .hero-watch,
+  html body .hero__ctas .btn--ghost {
+    height: 54px !important;
+    border-radius: 16px !important;
+  }
+  html body .hero__ctas .hero-watch {
+    font-size: calc(16px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+    padding-inline: 16px 8px !important;
+  gap: 16px !important;
+  }
+  .hero__ctas .hero-watch .btn__arr {
+    width: 38px;
+    height: 38px;
+  }
+  html body .hero__ctas .btn--ghost {
+    font-size: calc(15px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+    padding-inline: 18px !important;
+  }
+  .hero__quick {
+    margin-top: 14px !important;
+  }
+  .biz {
+    border-radius: 24px !important;
+  }
+  html body .biz__row {
+    flex-direction: column;
+  }
+  html body .biz__row .btn {
+    width: 100%;
+    max-width: 320px;
+  }
+  #leaderboard .tabs::-webkit-scrollbar {
+    display: none;
+  }
+  html body #leaderboard .tab {
+    flex: none;
+    white-space: nowrap;
+    height: 40px;
+  }
+  html body .pod__av {
+    width: 46px !important;
+    height: 46px !important;
+  }
+  html body .pod--1 .pod__av {
+    width: 56px !important;
+    height: 56px !important;
+  }
+  html body .pod--1 .pod__block {
+    height: 84px !important;
+  }
+  html body .pod--2 .pod__block {
+    height: 62px !important;
+  }
+  html body .pod--3 .pod__block {
+    height: 48px !important;
+  }
+  html body .pod__name {
+    font-size: calc(14px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  html body .list {
+    grid-template-columns: minmax(0,1fr);
+    grid-auto-rows: 48px !important;
+    gap: 6px !important;
+  }
+  html body .row {
+    padding: 0 14px !important;
+    height: 48px !important;
+  }
+  #leaderboard .tabs-wrap {
+    top: 72px;
+    margin-inline: 0;
+    padding: 6px 0;
+  }
+  html body #leaderboard .tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    justify-content: flex-start;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    contain: inline-size;
+  }
+  #leaderboard .tabs__pill {
+    display: none !important;
+  }
+  #leaderboard .tab[aria-selected="true"] {
+    background: var(--kick) !important;
+    color: var(--kick-ink) !important;
+    border-radius: 12px;
+  }
+  .pod__val {
+    padding: 4px 9px !important;
+    max-width: 100%;
+  }
+  html body .pod__val > span[aria-hidden="true"]:not(.cnt) {
+    display: none;
+  }
+  html body .pod__val .cnt {
+    font-size: calc(17px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  .podium {
+    gap: 8px !important;
+  }
+  #leaderboard {
+  }
+}
+@media (min-width:761px) and (max-width:1023px) {
+  .vids {
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+/* off-screen scenes are not rendered at all (not just paused): no layers, no paint, no per-frame work */
+html.js .tour.is-idle .spw {
+  content-visibility: hidden;
+}
+html.js .scene__pin.is-off > *:not(.hero__copy) {
+  content-visibility: hidden;
+}
+
+/* low-performance mode: the hero holds still (the entrance and the scroll flight still play) */
+html.lite .scene__pin *,
+html.lite .scene__pin *::before,
+html.lite .scene__pin *::after {
+  animation-play-state: paused !important;
+}
+html body .hq {
+  min-height: 36px !important;
+  padding: 0 12px !important;
+  border-radius: var(--ds-r-pill);
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #dccbff !important;
+  font-weight: 600 !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .cspot::after,
+  .cpk::before {
+    animation: none;
+  }
+}
+
+/* the dock shows a leaderboard shortcut on computers, links and contact on phones */
+@media (min-width:861px) {
+  .dock__i--narrow {
+    display: none !important;
+  }
+}
+
+/* sponsor arrows: larger, solid and clearly clickable */
+.tour .tarr {
+  width: 72px;
+  height: 72px;
+  margin-top: -36px;
+  color: #1a0b33;
+  background: linear-gradient(180deg,#ffffff,#e6dcff) !important;
+  box-shadow: 0 0 0 4px rgba(160,107,255,.45),0 0 28px 4px rgba(160,107,255,.55),0 16px 30px -12px rgba(0,0,0,.85) !important;
+}
+.tour .tarr svg {
+  width: 30px;
+  height: 30px;
+  stroke-width: 3;
+}
+.tour .tarr:hover {
+  background: linear-gradient(180deg,#ffffff,#f2ecff) !important;
+  box-shadow: 0 0 0 5px rgba(160,107,255,.6),0 0 36px 8px rgba(160,107,255,.65),0 16px 30px -12px rgba(0,0,0,.85) !important;
+}
+@media (max-width:860px) {
+  .tour .tarr {
+    width: 54px;
+    height: 54px;
+    margin-top: 0;
+  }
+  .tour .tarr svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* On slower machines (balanced / lite tier) the slow ambient loops hold still while the page scrolls, so every frame goes to the scroll.
+   They resume a moment after scrolling stops (class set by core/base.js). On full tier they keep moving: the GPU runs them for free. */
+html:is([data-perf="balanced"],[data-perf="lite"]).is-scrolling :is(.aura__ray,.aura__bloom,.aura__m,.shoot,.sky-stars,.twk i,.mote,.motes i,.aurora i,.ast > svg,.rings > svg,.pod2,.astro) {
+  animation-play-state: paused !important;
+}
+
+/* the flight's echo ships and the scroll cue change opacity every frame: keep them on their own layers */
+#top .ship,
+.scroll-cue {
+  will-change: transform,opacity;
+}
+

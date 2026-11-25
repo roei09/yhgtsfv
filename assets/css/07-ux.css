@@ -1,0 +1,1192 @@
+/* UX layers: quick access, dock, contact, spacing, data status, phone layouts, layout guards */
+/* Quick access: hero shortcuts and the action dock */
+
+/* short scroll path: the hero flight takes 110vh of scrolling; the partner tour moves on every ~70svh */
+.scene {
+  height: 210vh;
+}
+.tour {
+  background: #14072e !important;
+  height: calc((1 + (var(--n) - 1) * .7) * 100vh);
+  height: calc((1 + (var(--n) - 1) * .7) * 100svh);
+}
+#collabs {
+  scroll-margin-top: -84px;
+}
+@media (scripting:none) {
+  .tour__pin {
+    position: relative;
+    height: auto;
+    overflow: visible;
+  }
+  .tour .spw {
+    position: relative;
+    inset: auto;
+    height: 100vh;
+    height: 100svh;
+    min-height: 640px;
+    visibility: visible;
+    opacity: 1;
+  }
+  .tmenu,
+  .tour__prog,
+  .tarr,
+  .tour__hint,
+  .tour__skip,
+  .a11y-btn,
+  .totop,
+  .burger,
+  .livecard,
+  #shareBtn,
+  .copy,
+  .tabs-wrap,
+  .nav__end .status {
+    display: none !important;
+  }
+  .tour .tour__top {
+    position: absolute;
+  }
+  noscript > p {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 300;
+    box-shadow: 0 -10px 30px -10px rgba(0,0,0,.7);
+  }
+  .doc .doc__x[data-close] {
+    display: none;
+  }
+  .spw:not(.is-on) *,
+  .spw:not(.is-on) *::before,
+  .spw:not(.is-on) *::after {
+    animation-play-state: running !important;
+  }
+  .scene {
+    height: 100vh !important;
+    height: 100svh !important;
+  }
+  .tour {
+    height: auto !important;
+  }
+  .dock {
+    display: none !important;
+  }
+}
+
+/* hero: a quiet second row of shortcuts under the two main buttons */
+.hq {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  font-size: calc(14px*var(--ax-tz,1)*var(--ax-hz,1));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: background .25s ease,box-shadow .25s ease;
+}
+.hq svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  opacity: .9;
+}
+.hq:hover {
+  box-shadow: inset 0 0 0 1px rgba(239,220,255,.4);
+}
+
+/* the action dock: appears once the hero buttons are gone, steps aside for the partner tour and the footer */
+.dock {
+  position: fixed;
+  z-index: 95;
+  left: 50%;
+  bottom: max(14px,env(safe-area-inset-bottom));
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: 5px;
+  border-radius: 18px;
+  background: rgba(14,5,32,.95);
+  box-shadow: inset 0 0 0 1px rgba(239,220,255,.16),0 0 0 2px var(--ink),0 16px 34px -14px rgba(0,0,0,.75);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%,18px);
+  transition: opacity .3s var(--ease),transform .35s var(--ease),visibility 0s .35s;
+}
+html.dock-on .dock {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%,0);
+  transition: opacity .3s var(--ease),transform .35s var(--ease),visibility 0s;
+}
+.dock__i {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 13px;
+  border-radius: 13px;
+  border: 0;
+  background: none;
+  color: #f1e9ff;
+  font: inherit;
+  font-weight: 700;
+  font-size: calc(13.5px*var(--ax-tz,1)*var(--ax-hz,1));
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .2s ease,color .2s ease;
+}
+.dock__i:hover {
+  background: rgba(239,220,255,.1);
+  color: #fff;
+}
+.dock__i[aria-current="true"],
+.dock__more[aria-expanded="true"] {
+  background: rgba(239,220,255,.15);
+  color: #fff;
+}
+.dock__ic {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  flex: none;
+}
+.dock__ic svg {
+  width: 18px;
+  height: 18px;
+}
+.dock__i--live .dock__ic {
+  background: var(--kick);
+  color: #061100;
+}
+.dock__i--live .dock__ic svg {
+  width: 15px;
+  height: 15px;
+}
+.dock__dot {
+  position: absolute;
+  top: -3px;
+  inset-inline-end: -3px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff2d55;
+  box-shadow: 0 0 0 2px var(--ink);
+  display: none;
+}
+body.is-live-mode .dock__dot {
+  display: block;
+}
+.dock__more {
+  display: none;
+}
+.dock__pop {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  inset-inline-end: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  min-width: 236px;
+  border-radius: 16px;
+  background: var(--space);
+  box-shadow: 0 0 0 2px var(--ink),0 0 0 4px rgba(239,220,255,.18),0 18px 40px -12px rgba(0,0,0,.8);
+}
+.dock__pop[hidden] {
+  display: none;
+}
+.dock__pop a {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px 14px;
+  border-radius: 11px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: calc(15px*var(--ax-tz,1)*var(--ax-hz,1));
+}
+.dock__pop a small {
+  font-weight: 500;
+  font-size: calc(12.5px*var(--ax-tz,1)*var(--ax-hz,1));
+  color: #d9cdf2;
+}
+.dock__pop a:hover {
+  background: rgba(239,220,255,.1);
+}
+.dock__pop a[aria-current="true"] {
+  background: rgba(83,252,24,.14);
+  box-shadow: inset -3px 0 0 var(--kick);
+}
+section[tabindex="-1"]:focus,
+main[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* the toast sits above the dock */
+html.dock-on .toast {
+  bottom: 92px;
+}
+
+/* mobile: icons over labels, the dock takes the bottom-right corner, "back to top" lives in the sections list */
+@media (max-width:860px) {
+  .dock__i {
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-width: 54px;
+    min-height: 52px;
+    padding: 4px 6px;
+    font-weight: 600;
+  }
+}
+@media (max-width:360px) {
+  .dock__i {
+    min-width: 48px;
+    padding: 4px 4px;
+  }
+}
+
+/* very large text: keep the dock on screen by dropping the visible labels (names stay for screen readers) */
+html.ax-tz-xl .dock__t {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* Recommended videos and business contact */
+
+/* recommended videos switch */
+.vtog {
+  display: inline-flex;
+  gap: 2px;
+  margin-top: 18px;
+  padding: 5px;
+  border-radius: 16px;
+  background: rgba(14,5,32,.78);
+  box-shadow: inset 0 0 0 1px rgba(239,220,255,.12);
+}
+.vtog[hidden] {
+  display: none;
+}
+.vtog button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: #f1e9ff;
+  font: inherit;
+  font-weight: 700;
+  font-size: calc(14px*var(--ax-tz,1)*var(--ax-hz,1));
+  cursor: pointer;
+}
+.vtog button[aria-pressed="true"] {
+  background: var(--kick);
+  color: var(--kick-ink);
+}
+
+/* business — the contact card: bigger, framed in Kick green */
+.biz {
+  position: relative;
+  margin: clamp(72px,9vw,120px) auto 0;
+  text-align: center;
+  isolation: isolate;
+  overflow: hidden;
+}
+.biz__ic {
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+  background: var(--kick);
+  color: var(--kick-ink);
+  box-shadow: 0 0 0 3px var(--ink),0 6px 0 var(--ink),0 0 30px rgba(83,252,24,.5);
+}
+.biz__ic svg {
+  width: 52%;
+  height: 52%;
+}
+.biz__tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  color: #c9ffb0;
+  font-weight: 800;
+  font-size: calc(12.5px*var(--ax-tz,1)*var(--ax-hz,1));
+  text-transform: uppercase;
+}
+.biz__h {
+  margin: 14px 0 10px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: #fff;
+  text-shadow: 0 3px 0 var(--ink);
+}
+.biz__p {
+  margin: 0;
+  color: #f1e9ff;
+  font-size: calc(clamp(17px,1.6vw,20px)*var(--ax-tz,1)*var(--ax-hz,1));
+}
+.biz__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: clamp(24px,3vw,34px) 0 0;
+}
+.biz__row .btn {
+  padding: 0 30px;
+  font-size: calc(18px*var(--ax-tz,1)*var(--ax-hz,1));
+  font-weight: 800;
+  background: var(--kick);
+  color: var(--kick-ink);
+  box-shadow: 0 0 0 2px var(--ink),0 5px 0 var(--ink) !important;
+}
+.biz__row .btn:hover {
+  transform: translateY(-2px);
+}
+.biz__addr {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-weight: 800;
+  color: #fff;
+  font-size: calc(clamp(18px,1.8vw,22px)*var(--ax-tz,1)*var(--ax-hz,1));
+  overflow-wrap: anywhere;
+}
+.biz__row .copy {
+  height: 46px;
+  padding: 0 18px;
+  margin: 0;
+  font-size: calc(15px*var(--ax-tz,1)*var(--ax-hz,1));
+}
+.biz__todo {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 14px;
+  outline: 1.5px dashed rgba(239,220,255,.4);
+  color: #e2d6f7;
+}
+
+/* performance: partner slides that are not on screen are invisible (visibility:hidden, opacity 0, inert), so the browser may skip
+   their ~2,500 elements when the whole page re-styles (e.g. the dark-contrast switch). Not in the stacked short-screen mode, not
+   while a slide is fading out, never without JS (then all slides are shown stacked). */
+@media (scripting:enabled) {
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0,24px,0);
+  }
+  html:not(.js) .reveal {
+    animation: revealSafety .01s 3s forwards;
+  }
+  html.js:not(.tour-stack) .tour .spw:not(.is-on):not(.is-leaving) {
+    content-visibility: hidden;
+  }
+}
+
+/* Tagline, Kick button and short hints on interactive parts */
+.hero__tag {
+  margin: 10px auto 0;
+  max-width: 34ch;
+  text-align: center;
+  text-shadow: 0 2px 0 var(--ink);
+}
+.hero__ctas .hero-watch {
+  font-weight: 800;
+}
+.is-live-mode .hero-watch.btn--kick,
+.is-live-mode .hero-watch.btn--kick .js-watch {
+  color: var(--kick-ink);
+}
+@media (max-width:420px) {
+  .hero__quick .hq svg {
+    display: none;
+  }
+  .hero__quick .hq {
+    padding: 0 11px;
+  }
+}
+.hint {
+  margin: 10px 0 0;
+  color: #d9caf5;
+  font-size: calc(13px*var(--ax-tz,1)*var(--ax-hz,1));
+  line-height: 1.5;
+}
+.hint--lb {
+  text-align: center;
+  margin: 10px 0 4px;
+}
+.hint--cmd {
+  margin: -4px 0 12px;
+}
+.is-live-mode .hint--notify {
+  display: none;
+}
+.hint--notify {
+  margin: 2px 0 0;
+  text-align: center;
+  font-size: calc(11.5px*var(--ax-tz,1)*var(--ax-hz,1));
+  color: var(--t2);
+}
+
+/* spacing between sections. The top still clears the wave seam (clamp(80px,8vw,150px));
+   the lake frame keeps its top because its pod sits there. */
+.stage > .frame {
+  padding-bottom: clamp(56px,6vw,96px);
+}
+.stage > .frame:not(.frame--lake),
+.foot2__frame {
+  padding-top: calc(clamp(80px,8vw,150px) + clamp(16px,2vw,32px));
+}
+
+/* the scenery gets its full drawn height (width x 900/1440) whenever the section is tall enough, so the side
+   mountains are never cut off at the top; the hills sit at the edges, clear of the centred titles */
+.stage > .frame > .scape {
+  height: min(calc(100vw * .625),calc(100% - 120px));
+}
+@media (max-width:600px) {
+  .scene {
+    --podY: 35vh;
+  }
+  .vids,
+  .links {
+    grid-template-columns: 1fr;
+  }
+  .specs li {
+    grid-template-columns: 96px 1fr;
+  }
+  .frame--night .links {
+    grid-template-columns: 1fr;
+  }
+  body.is-live-mode .livecard {
+    display: block !important;
+    left: 16px;
+    right: 16px;
+    bottom: 84px;
+    transform: none;
+    width: auto !important;
+    padding: 10px 14px !important;
+  }
+  body.is-live-mode .livecard__top {
+    display: none;
+  }
+  body.is-live-mode .livecard__title {
+    margin: 0 0 4px;
+  }
+  body.is-live-mode .livecard__title::before {
+    content: "● LIVE";
+    margin-inline-end: 8px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: var(--live);
+    color: #fff;
+    font: 700 calc(11px*var(--ax-tz,1)*var(--ax-hz,1))/1.4 var(--f-ui);
+    vertical-align: 2px;
+  }
+  .foot2__ctas .btn--discord {
+    display: none;
+  }
+  .ax__grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+  .a11y-btn {
+    right: auto;
+    left: 16px;
+    width: 46px !important;
+    height: 46px !important;
+  }
+  .a11y-btn svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .stage > .frame {
+    padding-bottom: 64px;
+  }
+  .stage > .frame > .scape {
+    height: min(calc(100vw * .625),calc(100% - 200px));
+  }
+}
+
+/* Kick Stats: tighter space between the header and the tabs */
+#leaderboard .sec__head {
+  margin-bottom: clamp(20px,2.4vw,32px);
+}
+#leaderboard .console {
+  padding-top: 0;
+}
+
+/* when text is enlarged, long leaderboard names wrap instead of being cut */
+html.ax-tz-up .pod__name {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* podium: DOM order is 1, 2, 3 for screen readers; the visual order stays 2, 1, 3 */
+.podium > .pod--2 {
+  order: 1;
+}
+.podium > .pod--1 {
+  order: 2;
+}
+.podium > .pod--3 {
+  order: 3;
+}
+
+/* contrast */
+.frame .sec__head .sec__intro {
+  font-weight: 400;
+  color: rgba(246,240,255,.9) !important;
+}
+.frame--desert .sec__head .sec__intro {
+  color: #fff !important;
+  text-shadow: 0 1px 3px rgba(40,6,20,.75);
+}
+.ax__reset {
+  background: #c8143c;
+}
+.frame--lake .h2--mega,
+.frame--lake .h2--mega em {
+  text-shadow: 0 3px 0 var(--ink),2px 0 0 var(--ink),-2px 0 0 var(--ink),0 -2px 0 var(--ink),0 2px 0 var(--ink),2px 2px 0 var(--ink),-2px 2px 0 var(--ink),2px -2px 0 var(--ink),-2px -2px 0 var(--ink),0 10px 30px rgba(26,8,52,.35) !important;
+}
+
+/* focus rings on the light Libero panel */
+.spw--pure .lbw__panel :focus-visible {
+  outline-color: #2a0b55;
+}
+
+/* Data status, touch targets and offer details */
+
+/* leaderboard data status: a real pill, colour + words (never colour alone) */
+.fresh {
+  color: #fff !important;
+  gap: 9px;
+  padding: 6px 14px 6px 12px;
+  border-radius: 999px;
+  background: rgba(14,5,32,.62);
+  box-shadow: inset 0 0 0 1px rgba(239,220,255,.18);
+  font-weight: 600;
+  font-size: calc(13px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  line-height: 1.3;
+}
+.fresh__dot {
+  width: 9px;
+  height: 9px;
+  flex: none;
+}
+.fresh[data-state="saved"] .fresh__dot,
+.fresh[data-state="stale"] .fresh__dot {
+  background: #ffc247;
+  box-shadow: 0 0 0 3px rgba(255,194,71,.2);
+}
+.fresh[data-state="saved"],
+.fresh[data-state="stale"] {
+  box-shadow: inset 0 0 0 1px rgba(255,194,71,.45);
+}
+.fresh[data-state="live"] {
+  box-shadow: inset 0 0 0 1px rgba(83,252,24,.45);
+}
+.fresh[data-state="live"] .fresh__dot {
+  background: var(--kick);
+}
+@keyframes freshPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(83,252,24,.55);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 8px rgba(83,252,24,0);
+  }
+}
+
+/* carousel dots: the dot stays small, the touch area does not (WCAG 2.2 target size ≥ 24px) */
+.tour .tdot::before {
+  content: "";
+  position: absolute;
+  inset: -9px -7px;
+}
+
+/* footer legal links: comfortable target */
+.foot2__links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding-inline: 2px;
+}
+
+/* after the visitor has moved once, the "how to" text has done its job — keep only the counter */
+.tour.has-moved .tour__how,
+.tour.has-moved .tour__hint .mouse {
+  display: none !important;
+}
+.tour.has-moved .tour__hint {
+  padding: 6px !important;
+}
+
+/* partner offers: who runs the offer + validity (filled from DATA.deals) */
+.deal__terms {
+  margin: 12px 0 0;
+  max-width: 46ch;
+  text-wrap: pretty;
+  font-size: calc(12px*var(--ax-tz,1)*var(--ax-hz,1));
+  line-height: 1.45;
+  color: rgba(241,233,255,.8);
+}
+.deal__terms a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.deal__until:empty,
+.deal__more:empty {
+  display: none;
+}
+.deal__until {
+  font-weight: 700;
+  color: #fff;
+}
+.spw--pure .deal__terms {
+  color: #3a2a55;
+}
+.spw--pure .deal__until {
+  color: #1e0f3a;
+}
+.lcode.is-expired {
+  opacity: .45;
+}
+.lcode.is-expired .copy {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion:no-preference) {
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+  html:not(.lite) .fresh[data-state="live"] .fresh__dot {
+    animation: freshPulse 2.4s ease-out 3;
+  }
+}
+
+/* policy dialogs: the update date up front */
+.doc__stamp {
+  margin: 0 0 14px;
+  font-size: calc(13px*var(--ax-tz,1)*var(--ax-hz,1));
+  color: var(--t3);
+}
+
+/* Phones: every sponsor slide uses one layout, object zone on top and panel below.
+   The zone (--zT, --zH) is measured by ui.js; objects are centred and sized to fill it. */
+
+/* Phones: the hero opens airy, with the bodies pushed to the corners clear of the pod, title and buttons.
+   The floating live card is desktop-only; on phones the red "LIVE" button in the bar does that job. */
+@media (max-width:860px) {
+  #field .ast:nth-child(1) {
+    --x: 13% !important;
+    --y: 15% !important;
+    --s: 72px !important;
+  }
+  #field .ast:nth-child(2) {
+    --x: 9% !important;
+    --y: 44% !important;
+    --s: 52px !important;
+  }
+  #field .ast:nth-child(3) {
+    --x: 91% !important;
+    --y: 91% !important;
+    --s: 80px !important;
+  }
+  #field .ast:nth-child(4) {
+    --x: 97% !important;
+    --y: 80% !important;
+    --s: 104px !important;
+    display: none !important;
+  }
+  #field .ast:nth-child(5) {
+    --x: 50% !important;
+    --y: 108% !important;
+    --s: 130px !important;
+  }
+}
+@media (max-width:860px) and (max-height:700px) {
+  #field .ast:nth-child(3) {
+    --y: 93% !important;
+    --s: 62px !important;
+  }
+}
+
+/* computers: the planets, gems and Nuggets keep the proportions of a full-HD screen (1920×~860) on shorter windows too,
+   so a laptop opens with the same open, uncrowded frame instead of everything bunching toward the middle */
+@media (min-width:861px) {
+  .spw--pure .lcode__deals {
+    gap: 8px;
+  }
+  .spw--pure .lcode__deals a {
+    padding: 11px 12px;
+  }
+  .nav {
+    top: 0 !important;
+    padding: 0 !important;
+  }
+  .nav.is-scrolled .nav__bar {
+    background: rgba(16,6,36,.92) !important;
+  }
+  .nav .nav__links a:hover,
+  .nav .nav__links a[aria-current],
+  .nav .nav__links a.is-active {
+    color: #fff !important;
+  }
+  .nav .nav__links a:hover::after,
+  .nav .nav__links a[aria-current]::after,
+  .nav .nav__links a.is-active::after {
+    transform: scaleX(1);
+  }
+  .nav .nav-watch::after {
+    content: "←";
+    margin: 0;
+    font: 700 calc(13px*var(--ax-tz,1)*var(--ax-hz,1))/1 var(--f-ui);
+    transition: transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .nav .nav-watch:hover::after {
+    transform: translateX(-4px);
+  }
+  .nav .nav__links a::after {
+    content: "";
+    position: absolute;
+    inset-inline: 10px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .45s cubic-bezier(.22,1,.36,1);
+    bottom: 0;
+  }
+  .nav .status {
+    background: none !important;
+    box-shadow: none !important;
+  }
+  .tour__hint {
+    left: 88px !important;
+  }
+  .tour__disc {
+    right: 88px !important;
+  }
+  .spw--neon .spw__panel .btn {
+    font-size: calc(18px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  .tour .spw--street .spw__panel {
+    width: min(560px,42vw);
+    right: 4vw;
+    padding: 34px 36px 32px;
+  }
+  .spw--street .spw__text {
+    font-size: calc(19px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  .spw--street .spw__panel .btn {
+    font-size: calc(18px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  .tour .spw--street .spw__art {
+    left: 3vw;
+    top: 12vh;
+    bottom: 9vh;
+    width: calc(100vw - min(560px,42vw) - 7vw - 40px);
+    scale: 1;
+  }
+  .spw--pure .lcode__k {
+    font-size: calc(15px*var(--ax-tz,1)*var(--ax-hz,1));
+    padding: 6px 12px;
+  }
+  .spw--pure .lcode__what {
+    font-size: calc(19px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  .spw--pure .lcode__deals b {
+    font-size: calc(19px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  .spw--pure .lcode__deals span {
+    font-size: calc(16px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  .tour .spw--cards .cpw__deal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: .35em;
+  }
+  .tour .spw--cards .cpw__deal span {
+    font-size: calc(clamp(20px,1.7vw,27px)*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  #field .ast:nth-child(1) {
+    --s: clamp(110px,min(13vw,29vh),250px) !important;
+  }
+  #field .ast:nth-child(2) {
+    --s: clamp(72px,min(8vw,18vh),150px) !important;
+  }
+  #field .ast:nth-child(3),
+  #field .ast:nth-child(4) {
+    --s: clamp(100px,min(11vw,24.5vh),210px) !important;
+  }
+  #field .ast:nth-child(5) {
+    --s: clamp(120px,min(14vw,31vh),260px) !important;
+  }
+  #field .ast:nth-child(6) {
+    --s: clamp(40px,min(4vw,9vh),76px) !important;
+  }
+  .nugz {
+    width: clamp(130px,min(13vw,27vh),236px) !important;
+  }
+}
+@media (min-width:861px) and (max-height:700px) {
+  .livecard {
+    display: none !important;
+  }
+}
+
+/* Entrances and primary actions */
+
+/* links and videos: already there, all at once — no one-by-one entrance, no per-thumbnail fade */
+#links .reveal,
+#videos .reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  transition-delay: 0s !important;
+}
+#videos .vid__thumb img {
+  transition: transform 900ms var(--ease) !important;
+}
+#videos .vid__thumb.is-loading img {
+  opacity: 1 !important;
+}
+
+/* "skip the sponsors" — big enough to notice */
+.tour .tour__skip {
+  padding: 12px 22px !important;
+  gap: 10px;
+  font-size: calc(15px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  font-weight: 800 !important;
+  background: #fff !important;
+  color: #1a0b33 !important;
+  box-shadow: 0 10px 28px -8px rgba(10,2,30,.65),0 0 0 4px rgba(255,255,255,.18) !important;
+  bottom: calc(clamp(22px,4vh,40px) + 54px) !important;
+}
+.tour .tour__skip span {
+  font-size: 1.1em;
+}
+.tour .tour__skip:hover {
+  background: #efe6ff !important;
+}
+.tour .tour__skip:focus-visible {
+  outline: 3px solid var(--kick) !important;
+  outline-offset: 3px;
+}
+
+/* hero field: a full-size layer. The pointer parallax puts a transform on #field, which makes it the containing
+   block of the planets; without a size of its own every planet's top:% collapses to the top edge. */
+#field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+#field .ast {
+  will-change: transform;
+  pointer-events: auto;
+}
+
+/* Layout guards: nothing overlaps from 320px to 1920px */
+
+/* footer dolphin never sits on the call-to-action buttons */
+@media (min-width:701px) and (max-width:1100px) {
+  .astro {
+    right: 4%;
+    top: auto;
+    bottom: calc(min(520px,60%) * .3);
+    width: clamp(120px,14vw,170px);
+  }
+}
+
+/* phone dock: readable labels (12px), and on narrow phones it leaves room for the accessibility button */
+
+/* sponsors on phones and tablets: the "skip" button sits under the partner menu, clear of the panel;
+   the try-me hints move to the bottom of the object zone so the two never collide */
+@media (max-width:860px) {
+  .scene {
+    --podS: min(59vw,30vh);
+  }
+  .tour.has-zones .spw .spw__art {
+    top: var(--zT) !important;
+    bottom: auto !important;
+    height: var(--zH) !important;
+    left: 50% !important;
+    right: auto !important;
+    width: min(94vw,calc(var(--zH)*1.3)) !important;
+    margin-left: calc(min(94vw,calc(var(--zH)*1.3))/-2);
+    padding: 0 !important;
+  }
+  #field .ast:nth-child(6) {
+    display: none;
+  }
+  .nugz__tag {
+    width: 112px !important;
+  }
+  .hero__ctas .btn {
+    font-size: calc(14.5px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+    padding-inline: 14px !important;
+  }
+  .spw__panel .btn {
+    height: 48px;
+  }
+  .tour .spw--cards .cpw__code .lcode__k {
+    font-size: calc(12px*var(--ax-tz,1)*var(--ax-hz,1));
+    padding: 5px 8px;
+  }
+  .vids,
+  .links,
+  .lb {
+    grid-template-columns: minmax(0,1fr) !important;
+  }
+  .tour .tarr {
+    width: 46px;
+    height: 46px;
+    margin-top: 0;
+  }
+  .spw--pure .spw__panel {
+    max-height: none;
+    overflow: visible;
+    padding: 12px 14px 14px;
+  }
+  .tour .spw--pure .spw__panel {
+    top: auto !important;
+    bottom: calc(clamp(22px,4vh,40px) + 50px) !important;
+  }
+  .spw--pure .spw__logo {
+    max-height: 30px;
+    width: auto;
+  }
+  .spw--pure .lcode {
+    padding: 6px 2px;
+    margin-top: 4px;
+  }
+  .spw--pure .lcode__v {
+    font-size: calc(19px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  .spw--pure .lcode__what {
+    margin-top: 2px;
+    font-size: calc(13px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  .spw--pure .lcode__deals {
+    gap: 6px;
+  }
+  .spw--pure .lcode__deals a {
+    padding: 5px 7px;
+  }
+  .spw--pure .spw__panel .btn {
+    margin-top: 10px;
+    height: 44px;
+  }
+  .tour .tour__top {
+    display: none;
+  }
+  .tour .tour__hint {
+    display: none !important;
+  }
+  .dock {
+    left: auto;
+    right: max(10px,env(safe-area-inset-right));
+    transform: translateY(18px);
+  }
+  html.dock-on .dock {
+    transform: none;
+  }
+  .dock__more,
+  .dock__i--wide {
+    display: none !important;
+  }
+  html.dock-on .totop {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden;
+  }
+  .hq {
+    font-size: calc(13px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  .tour.has-zones .spw--street .spw__art > .tee3 {
+    width: min(84cqw,98cqh) !important;
+    left: 50% !important;
+    top: 43% !important;
+  }
+  .tour.has-zones .spw--street .spw__art > .lz__halo {
+    top: 43% !important;
+  }
+  .tour.has-zones .lz__ledge {
+    width: min(86cqw,100cqh) !important;
+    transform: translateX(-50%) !important;
+  }
+  .tour.has-zones .pzi {
+    height: calc(var(--zT) + var(--zH) + 90px) !important;
+  }
+  .tour.has-zones .pzi .psg {
+    width: var(--sgW) !important;
+    left: var(--sgL) !important;
+    top: var(--sgT) !important;
+  }
+  .tour.has-zones .cpw {
+    --ch: calc(var(--zT) + var(--zH) + 90px);
+    height: var(--ch) !important;
+    left: clamp(calc(100vw - var(--ch)*2.357),calc(50vw - var(--ch)*2.357*.26),0px) !important;
+  }
+  .tour.has-zones .cpk {
+    width: var(--pkW) !important;
+    left: var(--pkL) !important;
+    bottom: var(--pkB) !important;
+  }
+  .tour.has-zones .cpod {
+    width: var(--pdW) !important;
+    left: var(--pdL) !important;
+    bottom: var(--pdB) !important;
+  }
+  .tour.has-zones .spw--pure .lcode__deals {
+    display: none !important;
+  }
+  .tour.has-zones .cpw__sub {
+    display: none !important;
+  }
+  .tour.has-zones .cpw__name {
+    font-size: calc(34px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+    margin-bottom: 4px !important;
+  }
+  .tour.has-zones :is(.spw__tag,.lbw__kick,.cpw__tag) {
+    display: none !important;
+  }
+  .tour.has-zones .spw__panel {
+    padding: 14px 16px !important;
+  }
+  .tour.has-zones .spw--pure .lcode + .lcode .lcode__what {
+    display: none !important;
+  }
+  .tour.has-zones .spw--pure .spw__logo img {
+    max-height: 34px;
+    width: auto;
+    margin-inline: auto;
+  }
+  .tour.has-zones .mh__logo img {
+    max-height: 48px;
+    width: auto;
+  }
+  .tour.has-zones .cpw__deal {
+    margin-top: 8px !important;
+    font-size: calc(17px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  .tour.has-zones .cpw__deal span {
+    display: inline !important;
+  }
+  .tour.has-zones .cpw__odds {
+    margin: 6px 0 8px !important;
+  }
+  .tour.has-zones .cpw__code {
+    margin-bottom: 10px !important;
+    padding: 8px 14px !important;
+  }
+  .tour.has-zones .deal__terms {
+    margin-top: 8px;
+    font-size: calc(11px*var(--ax-tz,1)*var(--ax-hz,1));
+  }
+  .tour.has-zones .lz__panel {
+    min-height: 0 !important;
+  }
+  .tour.has-zones .lz__panel .spw__text {
+    margin-bottom: 14px;
+  }
+  .tour.has-zones .spw--pure .spw__art {
+    width: min(96vw,calc(var(--zH)*1.6)) !important;
+    margin-left: calc(min(96vw,calc(var(--zH)*1.6))/-2);
+  }
+  html body .livecard,
+  html body.is-live-mode .livecard {
+    display: none !important;
+  }
+  .dock__i {
+    font-size: calc(12px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  .tour .tour__skip {
+    display: inline-flex !important;
+    top: calc(76px + 56px) !important;
+    bottom: auto !important;
+    right: 12px !important;
+    left: auto !important;
+    transform: none !important;
+    padding: 8px 14px !important;
+    font-size: calc(13px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+  }
+  .tour .tour__skip:hover {
+    transform: none !important;
+  }
+}
+@media (max-width:700px) {
+  .foot2__frame {
+    min-height: 720px;
+  }
+  .astro {
+    bottom: calc(min(520px,60%) * .33);
+    width: 84px;
+  }
+}
+
+/* smallest phones (320–374px): both hero buttons on one row, the three shortcuts on one row, no corner gem */
+@media (max-width:374px) {
+  .dock {
+    left: 68px !important;
+    right: 6px !important;
+    justify-content: space-between;
+  }
+  .scene {
+    --podS: min(52vw,26vh);
+  }
+  .tmenu__b {
+    padding: 0 7px !important;
+    font-size: calc(12px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+    gap: 0 !important;
+  }
+  .tmenu__b i {
+    display: none;
+  }
+  .dock__t {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .dock__i {
+    flex: 1;
+    min-width: 0 !important;
+    padding: 4px 2px !important;
+    letter-spacing: -.01em;
+    min-height: 48px !important;
+  }
+  .hero__ctas {
+    flex-wrap: nowrap !important;
+  }
+  .hero__ctas .btn {
+    font-size: calc(13.5px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+    padding-inline: 12px !important;
+    height: 48px !important;
+  }
+  .hero__quick {
+    flex-wrap: nowrap !important;
+  }
+  .hq {
+    font-size: calc(12.5px*var(--ax-tz,1)*var(--ax-hz,1)) !important;
+    white-space: nowrap;
+  }
+  #field .ast:nth-child(3) {
+    display: none !important;
+  }
+}
+@media (max-width:374px) and (max-height:620px) {
+  .scene {
+    --podS: min(44vw,22vh);
+  }
+}
